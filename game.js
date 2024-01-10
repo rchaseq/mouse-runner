@@ -63,6 +63,7 @@ class playGame extends Phaser.Scene{
         //score is how many platforms successfully cleared
                 score ++;
                 scoreText.setText('Score: ' + score);
+                highScoreText.setText('Highest score: ' + highScore);
             }
         });
 
