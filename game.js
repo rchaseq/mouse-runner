@@ -50,8 +50,8 @@ class playGame extends Phaser.Scene{
         //score
         var score = 0;
         var scoreText = this.add.text(24, 24, 'Score: 0', { font: '20px arial', fill: 'black' });
-        let highScore = localStorage.getItem(gameOptions.localStorageName) == null ? 0 : localStorage.getItem(gameOptions.localStorageName);
-        var highScoreText = this.add.text(24, 54, 'Highest score: ' + highScore, { font: '20px Arial', fill: 'black' });;
+        this.highScore = localStorage.getItem(gameOptions.localStorageName) == null ? 0 : localStorage.getItem(gameOptions.localStorageName);
+        var highScoreText = this.add.text(24, 54, 'Best score: ' + this.highScore.toString(), { font: '20px Arial', fill: 'black' });
 
         // group with all active platforms
         this.platformGroup = this.add.group({
@@ -63,7 +63,6 @@ class playGame extends Phaser.Scene{
         //score is how many platforms successfully cleared
                 score ++;
                 scoreText.setText('Score: ' + score);
-                highScoreText.setText('Highest score: ' + highScore);
             }
         });
 
@@ -130,8 +129,10 @@ class playGame extends Phaser.Scene{
         // game over
         if(this.player.y > game.config.height){
             this.scene.start("PlayGame");
+
         // updating top score in local storage
-            localStorage.setItem(gameOptions.localStorageName, Math.max(this.highScore));
+            localStorage.setItem(gameOptions.localStorageName, this.highScore);
+            highScoreText.setText('Best score: ' + this.highScore.toString());
         }
         this.player.x = gameOptions.playerStartPosition;
 
