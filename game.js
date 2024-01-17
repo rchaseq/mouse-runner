@@ -43,7 +43,7 @@ class titleScene extends Phaser.Scene{
     preload(){
         this.load.image('player', 'player.png');
         this.load.audio('squeak', 'squeak.mp3');
-        this.load.audio('origins', 'origins.ogg');
+        // this.load.audio('origins', 'origins.ogg');
     }
     create(){
 
