@@ -50,11 +50,13 @@ class titleScene extends Phaser.Scene{
         this.centerX = game.config.width/2;
         this.centerY = game.config.height/2;
 
+        /* does not work with all browsers, disabling until fixed
         //adding background music that will not restart upon game over and will loop when finished
         this.sound.play('origins', {
                 volume: 0.5,
                 loop: true
             });
+        */
 
         this.add.text(this.centerX, this.centerY -100, 'Mouse Runner', { font: '50px arial', fill: 'black' }).setOrigin(0.5, 0.5);
 
