@@ -87,7 +87,6 @@ class titleScene extends Phaser.Scene{
 
 }}
 
-
 // playGame scene
 class playGame extends Phaser.Scene{
     constructor(){
