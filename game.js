@@ -9,7 +9,7 @@ let gameOptions = {
     jumpForce: 400,
     playerStartPosition: 200,
     jumps: 2,
-    localStorageName: "mouserunner"
+    localStorageName: 'mouserunner',
 }
 
 window.onload = function() {
@@ -29,6 +29,7 @@ window.onload = function() {
     }
 
     game = new Phaser.Game(gameConfig);
+
     window.focus();
     resize();
     window.addEventListener("resize", resize, false);
@@ -37,6 +38,7 @@ window.onload = function() {
 // titleScene scene
 class titleScene extends Phaser.Scene{
     constructor(){
+    //super() inherits all the characteristics of the Phaser "scene" class
         super("TitleScene");
     }
 
@@ -50,9 +52,8 @@ class titleScene extends Phaser.Scene{
         this.centerX = game.config.width/2;
         this.centerY = game.config.height/2;
 
-
     //adding background music that will not restart upon game over and will loop when finished
-        this.sound.play('origins', {
+            this.sound.play('origins', {
                 volume: 0.5,
                 loop: true
             });
@@ -97,15 +98,71 @@ class playGame extends Phaser.Scene{
     preload(){
         this.load.image('platform', 'platform.png');
         this.load.image('player', 'player.png');
+        this.load.image('pause', 'pause.png');
+        this.load.image('mute', 'mute.png');
         this.load.audio('squeak', 'squeak.mp3');
     }
 
     create(){
 
-        //score
-        var score = 0;
-        var scoreText = this.add.text(24, 24, 'Score: 0', { font: '20px arial', fill: 'black' });
 
+        //score
+        let score = 0;
+        let highestScore = 0;
+        var scoreText = this.add.text(24, 24, 'Score: ', { font: '20px arial', fill: 'black' });
+        var topScoreText = this.add.text(24, 54, 'Top score: ', { font: '20px arial', fill: 'black' });
+        //const pauseButton = this.add.image(750, 70, 'pause');
+        //const muteButton = this.add.image(752, 30, 'mute');
+
+        getHighestScore();
+        displayHighestScore();
+
+        // Function to retrieve the highest score
+        function getHighestScore() {
+            highestScore = localStorage.getItem('highestScore') || 0;
+            return parseInt(highestScore);
+        };
+
+        // Function to display the highest score
+        function displayHighestScore() {
+            topScoreText.setText('Top score: ' + highestScore);
+        };
+
+        // Function to save the highest score
+        function saveHighestScore(score) {
+            if (score > highestScore) {
+                highestScore = score;
+                localStorage.setItem('highestScore', highestScore);
+            }
+        };
+
+        // Function to update the highest score
+        function updateHighScore(){
+            if (score > getHighestScore()){
+                saveHighestScore(score)
+            }
+        };
+
+        /* Function to toggle mute/unmute
+        function toggleMute() {
+            audio.setMute(!audio.isMuted);
+        };
+
+        // Function to toggle pause/resume
+        function togglePause() {
+            if (this.scene.isPaused()) {
+                this.scene.resume();
+            } else {
+                this.scene.pause();
+            }
+        };
+
+        //adding mute & unmute functionality
+        muteButton.setInteractive({cursor: 'pointer'}).on('pointerdown', toggleMute);
+
+        //adding pause & resume functionality
+        pauseButton.setInteractive({cursor: 'pointer'}).on('pointerdown', togglePause);
+        */
 
         // group with all active platforms
         this.platformGroup = this.add.group({
@@ -117,8 +174,10 @@ class playGame extends Phaser.Scene{
         //score is how many platforms successfully cleared
                 score ++;
                 scoreText.setText('Score: ' + score);
+                updateHighScore();
             }
         });
+
 
         // platform pool
         this.platformPool = this.add.group({
@@ -135,6 +194,8 @@ class playGame extends Phaser.Scene{
         // adding a platform to the game, the arguments are platform width and x position
         this.addPlatform(game.config.width, game.config.width / 2);
 
+        
+
         // adding the player
         this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height / 2, 'player');
         this.player.setGravityY(gameOptions.playerGravity);
@@ -144,6 +205,8 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on('pointerdown', this.jump, this);
+
+    
     }
 
         // the core of the script - platforms are added from the pool or created on the fly
@@ -166,6 +229,8 @@ class playGame extends Phaser.Scene{
         this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
     }
 
+    
+
         // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
         jump(){
             if(this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps)){
@@ -177,11 +242,14 @@ class playGame extends Phaser.Scene{
                 this.sound.play('squeak');
         }
     }
+    
+    
     update(){
 
+
         // game over
-        if(this.player.y > game.config.height + 200){
-                this.scene.start("PlayGame");
+        if(this.player.y > game.config.height + 200){ 
+            this.scene.start('PlayGame');
         }
         this.player.x = gameOptions.playerStartPosition;
 
@@ -202,6 +270,7 @@ class playGame extends Phaser.Scene{
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
+
     }
 
 };
