@@ -140,7 +140,6 @@ class playGame extends Phaser.Scene{
         function updateHighScore(){
             if (score > getHighestScore()){
                 saveHighestScore(score);
-                topScoreText.setText('Top score: ' + highestScore);
             }
         };
 
