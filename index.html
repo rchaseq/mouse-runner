@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='chrome=1'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <link rel='icon' href='favicon.ico' />
+    <script>  const resizeOps = () => {
+        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + "px");
+      };
+    
+      resizeOps();
+      window.addEventListener("resize", resizeOps);
+      </script>
     <style>
+        html, body {
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        }
         * {
             margin: 0;
             padding: 0;
