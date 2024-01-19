@@ -30,9 +30,12 @@ window.onload = function() {
 
     game = new Phaser.Game(gameConfig);
 
+    const resizeOps = () => {
+        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + "px");
+          };
     window.focus();
-    resize();
-    window.addEventListener("resize", resize, false);
+    resizeOps();
+    window.addEventListener("resize", resizeOps);
 }
 
 // titleScene scene
