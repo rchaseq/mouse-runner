@@ -30,16 +30,12 @@ window.onload = function() {
 
     game = new Phaser.Game(gameConfig);
 
-    const resizeOps = () => {
-        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + "px");
-          };
-
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;this.scale.minWidth = 320;this.scale.minHeight = 480;this.scale.maxWidth = 768;this.scale.maxHeight = 1152;
     game.scale.refresh();
     
     window.focus();
-    resizeOps();
-    window.addEventListener("resize", resizeOps);
+    resize();
+    window.addEventListener("resize", resize(), false);
 }
 
 // titleScene scene
